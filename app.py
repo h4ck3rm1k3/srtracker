@@ -32,17 +32,24 @@ def index():
     if app.config['OPEN311_API_KEY']:
         params['api_key'] = app.config['OPEN311_API_KEY']
     r = requests.get(url, params=params)
+
+    if 'request_id' in request.args:
+        request_id =request.args['request_id']
+    else :
+        request_id ="unknown"
+
     if r.status_code != 200:
         # TODO: need a template
         # TODO: log this, since we really shouldn't receive errors
-        return ("There was an error getting service request data." % request_id, 500, None)
+        return ("There was an error getting service request data for request id : %s ." % request_id, 500, None)
     return render_template('index.html', service_requests=r.json)
 
 
 @app.route("/requests")
 def redirect_request():
     if 'request_id' in request.args:
-        return redirect(url_for('show_request', request_id=request.args['request_id']))
+        request_id =request.args['request_id']
+        return redirect(url_for('show_request', request_id))
     else:
         abort(404)
 

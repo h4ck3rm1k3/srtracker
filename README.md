@@ -12,6 +12,34 @@ It includes the following components:
 Installation & Configuration
 ----------------------------
 
+You need to install an open311 compliant API server first, it is by default expected to be run on port 5000.
+see http://open311.org for more details.
+
+SRTracker's `app.py` web app requires the following python modules :
+
+- flask
+  debian package : python-flask - micro web framework based on Werkzeug, Jinja2 and good intentions
+
+- requests 
+  debian package : python-requests - elegant and simple HTTP library for Python, built for human beings
+
+- iso8601
+  no debian package,
+  http://pypi.python.org/pypi/iso8601/
+  pip-2.6 install iso8601
+
+- dateutil 
+  debian package : python-dateutil - powerful extensions to the standard datetime module
+
+- psycopg2
+  debian package : python-psycopg2 - Python-Modul for PostgreSQL
+
+- configuration
+ copy the file updater/configuration.py.example to updater/configuration.py and edit.
+
+see also requirements.txt for detailed packages and version numbers.
+
+
 SRTracker's `app.py` web app requires the following environment variables:
 
 - `OPEN311_SERVER`: the fully qualified URL for the endpoint server, e.g. _'http://311.baltimorecity.gov/open311/v2'_
