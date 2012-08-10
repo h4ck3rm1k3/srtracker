@@ -4,6 +4,15 @@ import requests
 import iso8601
 import updater
 
+import logging
+fileHandler = logging.FileHandler('application.log')
+logger = logging.getLogger('TESTHARNESSFILE')
+logger.addHandler(fileHandler)
+logger.setLevel(logging.DEBUG)
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
+
+
 # Config
 DEBUG = True
 OPEN311_SERVER = 'localhost:5000'
@@ -25,6 +34,32 @@ def password_protect():
                 {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 
+def debugrequest (r):
+    logger.debug("Request form %s" % pp.pformat(r.form))            
+    logger.debug("Request args %s" % pp.pformat(r.args))            
+    logger.debug("Request values %s" % pp.pformat(r.values))            
+    logger.debug("Request data %s" % pp.pformat(r.data))            
+    logger.debug("Request url %s" % pp.pformat(r.url))            
+    logger.debug("Request env %s" % pp.pformat(r.environ))            
+    # r.cookies
+    # r.stream
+    # r.headers
+    # r.data
+    # r.files
+    # r.environ
+    # r.method
+    # r.path
+    # r.script_root
+    # r.url
+    # r.base_url
+    # r.url_root
+
+def debugresponse (r)    :
+    logger.debug("Response %s" % pp.pformat(r))            
+    logger.debug("Response Header %s" % pp.pformat(r.headers))            
+    logger.debug("Response Status code %s" % pp.pformat(r.status_code))            
+    logger.debug("Response content %s" % pp.pformat(r.content))            
+
 @app.route("/")
 def index():
     url = '%s/requests.json' % app.config['OPEN311_SERVER']
@@ -38,11 +73,23 @@ def index():
     else :
         request_id ="unknown"
 
+    try  :
+        service_requests=r.json
+    except :
+        logger.error("There was an error in the 311 service request response")
+        debugresponse (r)
+        debugrequest (request)
+        return ("There was an error in the 311 service request response", 500, None)
+
     if r.status_code != 200:
         # TODO: need a template
-        # TODO: log this, since we really shouldn't receive errors
+        logger.error("There was an error getting service request data for request id : %s ." % request_id)
+        debugresponse (r)
+        debugrequest (request)
+
         return ("There was an error getting service request data for request id : %s ." % request_id, 500, None)
-    return render_template('index.html', service_requests=r.json)
+
+    return render_template('index.html', service_requests)
 
 
 @app.route("/requests")
@@ -66,11 +113,16 @@ def show_request(request_id):
     r = requests.get(url, params=params)
     if r.status_code == 404:
         # TODO: need a template
-        # Log this?
+        logger.error("There is no service request on file for #%s" % request_id)
+        debugresponse (r)
+        debugrequest (request)    
+
         return ("There is no service request on file for #%s" % request_id, 404, None)
     elif r.status_code != 200:
         # TODO: need a template
-        # TODO: log this, since we really shouldn't receive errors
+        logger.error("There was an error getting data about service request #%s" % request_id)
+        debugresponse (r)
+        debugrequest (request)    
         return ("There was an error getting data about service request #%s" % request_id, 404, None)
         
     srs = r.json
