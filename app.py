@@ -77,6 +77,8 @@ def index():
 
     try  :
         service_requests=r.json
+        logger.debug("service_requests %s" % pp.pformat(service_requests))            
+
     except :
         logger.error("There was an error in the 311 service request response")
         debugresponse (r)
@@ -88,10 +90,9 @@ def index():
         logger.error("There was an error getting service request data for request id : %s ." % request_id)
         debugresponse (r)
         debugrequest (request)
-
         return ("There was an error getting service request data for request id : %s ." % request_id, 500, None)
 
-    return render_template('index.html', service_requests)
+    return render_template('index.html', sr=service_requests)
 
 
 @app.route("/requests")
