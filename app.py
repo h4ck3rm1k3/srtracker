@@ -99,7 +99,7 @@ def index():
 def redirect_request():
     if 'request_id' in request.args:
         request_id =request.args['request_id']
-        return redirect(url_for('show_request', request_id))
+        return redirect(url_for('show_request', request_id=request_id))
     else:
         abort(404)
 
