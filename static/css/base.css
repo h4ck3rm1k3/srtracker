@@ -48,9 +48,9 @@ table {
 input {
 	display: inline-block;
 	padding: 6px 12px;
-	font-size: 22px;
-	line-height: 28px;
-	border: 3px solid #dbdbdb;
+	font-size: 14px;
+	line-height: 18px;
+	border: 1px solid #dbdbdb;
 	border-radius: 5px;
 	box-shadow: inset 5px 5px 18px rgba(0, 0, 0, 0.13);
 }
@@ -58,11 +58,17 @@ input {
 input[type="submit"],
 button {
 	box-shadow: none;
-	background: #02bcc8;
-	border-color: #02bcc8;
+	background: #347eb3;
+	border-color: #347eb3;
 	color: #fff;
 	text-transform: uppercase;
 	font-weight: bold;
+}
+
+.in_yo_face input {
+	font-size: 22px;
+	line-height: 28px;
+	border-width: 3px;
 }
 
 .form_help {
@@ -95,9 +101,9 @@ button {
 .landing header {
 	margin: 0 auto 24px;
 	/* TODO: @2x support */
-	background: url("../img/service_tracker_logo_big.png");
-	width: 444px;
-	height: 193px;
+	background: url("../img/311_service_tracker_logo_big.png");
+	width: 436px;
+	height: 190px;
 	text-indent: -100em;
 	overflow: hidden;
 }
