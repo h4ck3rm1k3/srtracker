@@ -15,7 +15,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 # Config
 DEBUG = True
-OPEN311_SERVER = 'localhost:5000'
+OPEN311_SERVER = 'http://localhost:5000'
 OPEN311_API_KEY = ''
 PASSWORD_PROTECTED = False
 SECRET_KEY = 'please_please_change_this!'
