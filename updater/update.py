@@ -13,6 +13,9 @@ from dateutil.parser import parse as parse_date
 from db import DB
 from models import Subscription, UpdateInfoItem, Base
 
+
+
+
 # Config
 config_file = os.environ.get('UPDATER_CONFIGURATION', 'configuration')
 config = __import__(config_file, globals(), locals(), [], -1)
@@ -23,6 +26,8 @@ SR_INFO_CHUNK_SIZE = 50
 KNOWN_METHODS = ('email')
 
 db = DB(config.DB_STRING)
+db.create(Subscription)
+
 
 
 # FIXME: start using this

@@ -30,3 +30,4 @@ class DB(object):
     # alias session() for convenience:
     # now you can do "with db() as s:"
     __call__ = session
+

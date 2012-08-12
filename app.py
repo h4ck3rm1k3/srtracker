@@ -11,7 +11,7 @@ logger.addHandler(fileHandler)
 logger.setLevel(logging.DEBUG)
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
-
+import types
 
 # Config
 DEBUG = True
@@ -130,6 +130,14 @@ def show_request(request_id):
         
     srs = r.json
     if srs:
+
+        # debug the data
+        logger.debug("got data %s" % pp.pformat(srs))            
+
+        # check the return data, it should be a list
+        if (not isinstance(srs, types.ListType)):
+            return ("There was an error getting data about service request #%s" % request_id, 404, None)
+
         sr = srs[0]
         sr['requested_datetime'] = iso8601.parse_date(sr['requested_datetime'])
         for note in sr['notes']:
@@ -154,7 +162,14 @@ def show_request(request_id):
             # TODO: when subscription service supports more than e-mail, 
             # we should probably be able to show all your subscriptions here
             subscribed = updater.subscription_exists(request_id, 'email', session.get('email', ''))
-        
+
+
+        #more checks that should not be in the template, but in the app. lets have some type of logical separation here.
+        assert(sr['address'])
+        assert isinstance(sr['address'], types.StringTypes)
+        assert(sr['service_name'])
+        assert(sr['service_request_id'])
+
         body = render_template('service_request.html', sr=sr, subscribed=subscribed)
         return (body, 200, None)
     
@@ -173,7 +188,6 @@ def subscribe(request_id):
     return redirect(url_for('show_request', request_id=request_id))
 
 
-
 if __name__ == "__main__":
     app.config.from_object(__name__)
     app.debug = os.environ.get('DEBUG', str(app.debug)) == 'True'
@@ -184,5 +198,6 @@ if __name__ == "__main__":
     app.config['PASSWORD'] = os.environ.get('PASSWORD', '')
     
     port = int(os.environ.get('PORT', 5100))
+
     app.run(host='0.0.0.0', port=port)
     
