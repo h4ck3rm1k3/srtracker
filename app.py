@@ -146,6 +146,10 @@ def show_request(request_id):
         # add follow-on closure data
         by_id = {}
         for note in sr['notes']:
+
+            if(note['extended_attributes']['closed_datetime']):
+                note['extended_attributes']['closed_datetime']= iso8601.parse_date(  note['extended_attributes']['closed_datetime']   )
+
             if note['type'] == 'follow_on':
                 note_sr_id = note['extended_attributes']['service_request_id']
                 if note_sr_id in by_id:
@@ -168,7 +172,14 @@ def show_request(request_id):
         assert(sr['address'])
         assert isinstance(sr['address'], types.StringTypes)
         assert(sr['service_name'])
+        assert(sr['description'])
+        assert(sr['status'])
+        assert(sr['extended_attributes'])
+        assert(sr['extended_attributes']['channel'])
+        assert(sr['agency_responsible'])
         assert(sr['service_request_id'])
+
+
 
         body = render_template('service_request.html', sr=sr, subscribed=subscribed)
         return (body, 200, None)

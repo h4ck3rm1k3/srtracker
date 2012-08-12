@@ -39,6 +39,15 @@ SRTracker's `app.py` web app requires the following python modules :
 
 see also requirements.txt for detailed packages and version numbers.
 
+Database for testing has been set to sqlite, 
+the database model is defined in "updater/models.py", 
+
+HACK: I added the database creation code directly into updater/update.py, this is not a good idea for production code, but for testing it should be ok. 
+
+See also :
+http://www.rmunn.com/sqlalchemy-tutorial/tutorial.html
+
+
 
 SRTracker's `app.py` web app requires the following environment variables:
 
