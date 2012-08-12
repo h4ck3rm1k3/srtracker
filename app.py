@@ -5,7 +5,7 @@ import iso8601
 import updater
 
 import logging
-fileHandler = logging.FileHandler('application.log')
+fileHandler = logging.FileHandler('application2.log')
 logger = logging.getLogger('TESTHARNESSFILE')
 logger.addHandler(fileHandler)
 logger.setLevel(logging.DEBUG)
@@ -40,17 +40,14 @@ def debugrequest (r):
     logger.debug("Request values %s" % pp.pformat(r.values))            
     logger.debug("Request data %s" % pp.pformat(r.data))            
     logger.debug("Request url %s" % pp.pformat(r.url))            
+    logger.debug("Request headers %s" % pp.pformat(r.headers))            
     logger.debug("Request env %s" % pp.pformat(r.environ))            
     # r.cookies
     # r.stream
-    # r.headers
-    # r.data
     # r.files
-    # r.environ
     # r.method
     # r.path
     # r.script_root
-    # r.url
     # r.base_url
     # r.url_root
 
@@ -66,6 +63,11 @@ def index():
     params = {'extensions': 'true', 'legacy': 'false'}
     if app.config['OPEN311_API_KEY']:
         params['api_key'] = app.config['OPEN311_API_KEY']
+        
+    logger.debug("Server: %s" % app.config['OPEN311_SERVER'])            
+    logger.debug("Going to request url %s" % pp.pformat(url))            
+    logger.debug("going to request with params: %s" % pp.pformat(params))            
+
     r = requests.get(url, params=params)
 
     if 'request_id' in request.args:
