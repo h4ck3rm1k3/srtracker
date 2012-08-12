@@ -116,11 +116,11 @@ def show_request(request_id):
     r = requests.get(url, params=params)
     if r.status_code == 404:
         # TODO: need a template
-        logger.error("There is no service request on file for #%s" % request_id)
-        debugresponse (r)
-        debugrequest (request)    
-
-        return ("There is no service request on file for #%s" % request_id, 404, None)
+#        logger.error("There is no service request on file for #%s" % request_id)
+#        debugresponse (r)
+#        debugrequest (request)    
+        return render_template('no_service_request_found.html', rid=request_id)
+        
     elif r.status_code != 200:
         # TODO: need a template
         logger.error("There was an error getting data about service request #%s" % request_id)
@@ -159,8 +159,7 @@ def show_request(request_id):
         return (body, 200, None)
     
     else:
-        # TODO: need a template
-        return ("There is no service request on file for #%s" % request_id, 404, None)
+        return render_template('no_service_request_found.html', rid=request_id)
 
 
 @app.route("/subscribe/<request_id>", methods=["POST"])
